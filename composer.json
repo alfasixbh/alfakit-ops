@@ -1,0 +1,88 @@
+{
+  "name": "alfasix/alfakit-ops",
+  "description": "An operations toolkit for AlfaKit panels: failed jobs, queues and batches, the scheduler, a log viewer, cache and maintenance mode, and system information.",
+  "keywords": [
+    "laravel",
+    "alfakit",
+    "queues",
+    "failed-jobs",
+    "scheduler",
+    "logs",
+    "maintenance"
+  ],
+  "homepage": "https://alfakit.dev/docs/plugins/ops",
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Alfa Six",
+      "homepage": "https://alfasixbh.com",
+      "role": "Developer"
+    }
+  ],
+  "support": {
+    "issues": "https://github.com/alfasixbh/alfakit/issues",
+    "source": "https://github.com/alfasixbh/alfakit"
+  },
+  "require": {
+    "php": "^8.3",
+    "alfasix/alfakit": "^0.1|@dev"
+  },
+  "autoload": {
+    "psr-4": {
+      "AlfaSix\\AlfakitOps\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "AlfaSix\\AlfakitOps\\Tests\\": "tests/"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "AlfaSix\\AlfakitOps\\AlfakitOpsServiceProvider"
+      ]
+    },
+    "alfakit": {
+      "version": "^0.1",
+      "frontend": null,
+      "showcase": {
+        "demoPath": "ops/overview",
+        "tour": [
+          "Open System > Ops",
+          "Check queues and failed jobs",
+          "Review the scheduler",
+          "Read system information"
+        ],
+        "clips": [
+          "react-light",
+          "react-dark",
+          "vue-light",
+          "vue-dark",
+          "svelte-light",
+          "svelte-dark"
+        ],
+        "worksWith": [
+          "health",
+          "backup",
+          "webhooks"
+        ],
+        "highlights": [
+          "Failed jobs with retry and delete",
+          "Queues and batches",
+          "Scheduler overview",
+          "Log viewer",
+          "Cache and maintenance mode",
+          "System information",
+          "Read-only mode"
+        ]
+      }
+    }
+  },
+  "config": {
+    "sort-packages": true
+  },
+  "minimum-stability": "stable",
+  "prefer-stable": true
+}
