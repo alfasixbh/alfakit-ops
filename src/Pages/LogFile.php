@@ -13,6 +13,7 @@ use AlfaSix\Alfakit\Schemas\Components\Callout;
 use AlfaSix\Alfakit\Schemas\Components\Component;
 use AlfaSix\Alfakit\Schemas\Components\Grid;
 use AlfaSix\Alfakit\Support\Enums\Width;
+use AlfaSix\Alfakit\Support\NumberFormat;
 use AlfaSix\Alfakit\Tables\Columns\TextColumn;
 use AlfaSix\Alfakit\Tables\Enums\PaginationMode;
 use AlfaSix\Alfakit\Tables\Filters\SelectFilter;
@@ -25,7 +26,6 @@ use AlfaSix\AlfakitOps\Support\LogFiles;
 use AlfaSix\AlfakitOps\Support\LogReader;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\URL;
-use Illuminate\Support\Number;
 
 /**
  * The entries of one log file, newest first, read from the end of the file a page at a
@@ -138,7 +138,7 @@ class LogFile extends Page
         $row = LogFiles::find($this->getFile());
 
         return $row === null ? null : static::trans('file_summary', [
-            'size' => (string) Number::fileSize($row['size'], precision: 1),
+            'size' => NumberFormat::fileSize($row['size'], 1),
             'modified' => (string) Schedule::relative(\Carbon\CarbonImmutable::parse($row['modified_at'])->toIso8601String()),
         ]);
     }

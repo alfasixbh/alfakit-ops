@@ -7,6 +7,7 @@ namespace AlfaSix\AlfakitOps\Pages;
 use AlfaSix\Alfakit\Actions\Action;
 use AlfaSix\Alfakit\Notifications\Notification;
 use AlfaSix\Alfakit\Pages\Page;
+use AlfaSix\Alfakit\Support\NumberFormat;
 use AlfaSix\Alfakit\Tables\Columns\TextColumn;
 use AlfaSix\Alfakit\Tables\Filters\SelectFilter;
 use AlfaSix\Alfakit\Tables\Table;
@@ -14,7 +15,6 @@ use AlfaSix\AlfakitOps\Clusters\Operations;
 use AlfaSix\AlfakitOps\OpsPlugin;
 use AlfaSix\AlfakitOps\Pages\Concerns\InteractsWithOps;
 use AlfaSix\AlfakitOps\Support\LogFiles;
-use Illuminate\Support\Number;
 
 /**
  * The log files of the log directory: open one to browse its entries, download, empty or
@@ -86,7 +86,7 @@ class Logs extends Page
                     ->formatStateUsing(static fn (string $state): string => static::trans('types.'.$state)),
                 TextColumn::make('size')
                     ->label(static::trans('columns.size'))
-                    ->formatStateUsing(static fn (mixed $state): string => (string) Number::fileSize(is_numeric($state) ? (int) $state : 0, precision: 1))
+                    ->formatStateUsing(static fn (mixed $state): string => NumberFormat::fileSize(is_numeric($state) ? (int) $state : 0, 1))
                     ->sortable(),
                 TextColumn::make('modified_at')
                     ->label(static::trans('columns.modified_at'))

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AlfaSix\AlfakitOps\Widgets;
 
+use AlfaSix\Alfakit\Support\NumberFormat;
 use AlfaSix\Alfakit\Widgets\StatsOverviewWidget;
 use AlfaSix\Alfakit\Widgets\StatsOverviewWidget\Stat;
 use AlfaSix\AlfakitOps\OpsPlugin;
@@ -64,9 +65,9 @@ class SystemInfoWidget extends StatsOverviewWidget
             Stat::make(static::trans('session'), $drivers['session'])->icon('cookie'),
             Stat::make(static::trans('mail'), $drivers['mail'])->icon('mail'),
             Stat::make(static::trans('database'), $drivers['database'])->icon('database'),
-            $disk === null ? null : Stat::make(static::trans('disk'), static::trans('disk_value', ['free' => (string) Number::fileSize($disk['free'], precision: 1)]))
+            $disk === null ? null : Stat::make(static::trans('disk'), static::trans('disk_value', ['free' => NumberFormat::fileSize($disk['free'], 1)]))
                 ->description(static::trans('disk_description', [
-                    'total' => (string) Number::fileSize($disk['total'], precision: 1),
+                    'total' => NumberFormat::fileSize($disk['total'], 1),
                     'percentage' => (string) Number::percentage($disk['ratio'] * 100, precision: 0),
                 ]))
                 ->color($disk['ratio'] < SystemInfo::LOW_DISK_RATIO ? 'danger' : null)
