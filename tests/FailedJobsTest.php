@@ -220,3 +220,20 @@ it('explains when there is no failed job table', function (): void {
     expect($table['description'])->toContain('No failed job store')
         ->and($table['records'])->toBe([]);
 });
+
+it('retries the jobs it can and reports one Laravel cannot rebuild, instead of failing', function (): void {
+    $broken = failJob('emails');
+    $good = failJob('emails');
+    // A closure dispatched from tinker: queue:retry can't rebuild it ("bindTo() on null").
+    DB::table('failed_jobs')->where('uuid', $broken)->update(['payload' => json_encode([
+        'uuid' => $broken,
+        'job' => 'Illuminate\\Queue\\CallQueuedHandler@call',
+        'data' => ['commandName' => 'Illuminate\\Queue\\CallQueuedClosure', 'command' => 'not a serialized job'],
+    ])]);
+
+    failedJobsPage()
+        ->callTableBulkAction('retrySelected', [$broken, $good])
+        ->assertNotified('1 job pushed back onto its queue');
+
+    expect(DB::table('failed_jobs')->pluck('uuid')->all())->toBe([$broken]);
+});

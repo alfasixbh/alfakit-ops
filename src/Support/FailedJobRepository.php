@@ -210,13 +210,20 @@ final class FailedJobRepository
      */
     public static function retry(array $keys): int
     {
-        $existing = array_keys(self::findMany($keys));
+        $retried = 0;
 
-        if ($existing !== []) {
-            Artisan::call('queue:retry', ['id' => $existing]);
+        // One by one: a job Laravel can't rebuild (a closure dispatched from tinker) makes
+        // `queue:retry` throw. Report it and go on, so the action doesn't fail as a whole.
+        foreach (array_keys(self::findMany($keys)) as $id) {
+            try {
+                Artisan::call('queue:retry', ['id' => [$id]]);
+                $retried++;
+            } catch (Throwable $exception) {
+                report($exception);
+            }
         }
 
-        return count($existing);
+        return $retried;
     }
 
     /**
